@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="theme-color" content="#F2F2F7">
+<meta name="mobile-web-app-capable" content="yes">
+<title>AstroBot 控制台</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ══════════ 登录层 ══════════ -->
+<div id="login" class="login" hidden>
+  <div class="login__sky" aria-hidden="true"></div>
+  <div class="login__card">
+    <div class="login__logo" aria-hidden="true">
+      <svg viewBox="0 0 96 96" width="72" height="72">
+        <ellipse cx="48" cy="52" rx="38" ry="15" fill="none" stroke="#6FA1FF" stroke-width="2.5" opacity=".8" transform="rotate(-18 48 52)"/>
+        <circle cx="48" cy="46" r="17" fill="none" stroke="#6FA1FF" stroke-width="2" opacity=".35"/>
+        <path d="M48 22 L54 42 L74 48 L54 54 L48 74 L42 54 L22 48 L42 42 Z" fill="#FFC24B"/>
+        <circle cx="79" cy="38" r="3.4" fill="#6FA1FF"/>
+      </svg>
+    </div>
+    <h1 class="login__title">AstroBot</h1>
+    <p class="login__sub">你的机器人,现在在你掌心</p>
+
+    <label class="field">
+      <span class="field__label">服务器地址</span>
+      <input id="li-server" type="url" inputmode="url" autocapitalize="off" spellcheck="false"
+             placeholder="https://your-bot.example.com">
+    </label>
+    <label class="field">
+      <span class="field__label">用户名</span>
+      <input id="li-user" type="text" autocomplete="username" autocapitalize="off" spellcheck="false" placeholder="astrbot">
+    </label>
+    <label class="field">
+      <span class="field__label">密码</span>
+      <input id="li-pass" type="password" autocomplete="current-password" placeholder="••••••••">
+    </label>
+    <p class="login__hint" id="li-hint">首次登录的默认密码请查看机器人日志。</p>
+    <button id="li-btn" class="btn btn--primary btn--block">进入控制台</button>
+    <button id="li-demo" class="login__demo">先看看演示模式 →</button>
+  </div>
+  <p class="login__ver" id="li-ver"></p>
+</div>
+
+<!-- ══════════ 应用主体 ══════════ -->
+<div id="app" class="app" hidden>
+  <main id="pages" class="pages">
+    <section class="page page--dash" id="page-dash" hidden></section>
+    <section class="page page--chat" id="page-chat" hidden></section>
+    <section class="page page--logs" id="page-logs" hidden></section>
+    <section class="page page--plugins" id="page-plugins" hidden></section>
+    <section class="page page--config" id="page-config" hidden></section>
+    <section class="page page--sub" id="page-personas" hidden></section>
+    <section class="page page--sub" id="page-cron" hidden></section>
+    <section class="page page--sub" id="page-conversations" hidden></section>
+    <section class="page page--sub" id="page-providers" hidden></section>
+    <section class="page page--sub" id="page-settings" hidden></section>
+    <section class="page page--me" id="page-me" hidden></section>
+  </main>
+
+  <nav class="tabbar" id="tabbar">
+    <a class="tabbar__tab" data-route="dash" href="#/dash">
+      <svg viewBox="0 0 24 24"><path d="M3 13h4l3 7 4-16 3 9h4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span>总览</span>
+    </a>
+    <a class="tabbar__tab" data-route="logs" href="#/logs">
+      <svg viewBox="0 0 24 24"><path d="M4 5h16M4 10h10M4 15h13M4 20h7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      <span>日志</span>
+    </a>
+    <a class="tabbar__tab tabbar__tab--chat" data-route="chat" href="#/chat" aria-label="对话">
+      <span class="tabbar__orbit">
+        <svg viewBox="0 0 24 24"><path d="M12 4c-4.7 0-8.5 3.1-8.5 7 0 2.2 1.2 4.1 3.1 5.4-.2 1-.7 2-1.5 2.9 1.6-.1 3-.7 4-1.5.9.2 1.9.3 2.9.3 4.7 0 8.5-3.1 8.5-7s-3.8-7.1-8.5-7.1z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+      </span>
+      <span>对话</span>
+    </a>
+    <a class="tabbar__tab" data-route="plugins" href="#/plugins">
+      <svg viewBox="0 0 24 24"><path d="M9 3v3M15 3v3M9 18v3M15 18v3M3 9h3M3 15h3M18 9h3M18 15h3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><rect x="6" y="6" width="12" height="12" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>
+      <span>插件</span>
+    </a>
+    <a class="tabbar__tab" data-route="config" href="#/config">
+      <svg viewBox="0 0 24 24"><path d="M12 8.8a3.2 3.2 0 1 0 0 6.4 3.2 3.2 0 0 0 0-6.4z" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M12 2.8v2.4M12 18.8v2.4M4.7 6.5l1.9 1.4M17.4 16.1l1.9 1.4M2.8 12h2.4M18.8 12h2.4M4.7 17.5l1.9-1.4M17.4 7.9l1.9-1.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+      <span>配置</span>
+    </a>
+    <a class="tabbar__tab" data-route="me" href="#/me">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="8.5" r="3.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M4.5 20c1.4-3.4 4.2-5 7.5-5s6.1 1.6 7.5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      <span>我的</span>
+    </a>
+  </nav>
+</div>
+
+<!-- 全局浮层 -->
+<div id="toast-root"></div>
+<div id="sheet-mask" class="sheet-mask" hidden></div>
+<div id="sheet" class="sheet" hidden></div>
+<div id="modal" class="modal" hidden></div>
+<div id="imgv" class="imgv" hidden><img id="imgv-img" alt=""><button id="imgv-close" aria-label="关闭">×</button></div>
+
+<script src="js/util.js"></script>
+<script src="js/api.js"></script>
+<script src="js/mock.js"></script>
+<script src="js/page-dash.js"></script>
+<script src="js/page-chat.js"></script>
+<script src="js/page-logs.js"></script>
+<script src="js/page-plugins.js"></script>
+<script src="js/i18n-config-metadata.js"></script>
+<script src="js/mock-config-metadata.js"></script>
+<script src="js/page-config.js"></script>
+<script src="js/page-personas.js"></script>
+<script src="js/page-cron.js"></script>
+<script src="js/page-conversations.js"></script>
+<script src="js/page-providers.js"></script>
+<script src="js/page-settings.js"></script>
+<script src="js/page-me.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

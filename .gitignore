@@ -1,0 +1,14 @@
+# Android 构建工具链(体积大,腾讯镜像可重新下载)
+.sdk/
+
+# 构建产物
+build/
+AstroBot-Control.apk
+AstroBot-Control.apk.idsig
+
+# 签名密钥——绝不入库
+*.keystore
+
+# 系统杂物
+Thumbs.db
+.DS_Store
